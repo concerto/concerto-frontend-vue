@@ -26,18 +26,18 @@ The index.html contains the starting point-- the #app element, which is rendered
 
 The App component renders the concerto-screen element.  
 
-The ConceroScreen component renders the layout of the template, positions, and fields (concerto-field).  It listens for a 'frontend-key-changed' event, which is fired from the fields when they detect that a new key from the server doesn't match the existing key-- this happens when the server wants to force the screen to refresh. The screen also fires a 'concertotick' event on each field every second-- this allows the fields to update their duration (which is only displayed in debug mode).
+The ConcertoScreen component renders the layout of the template, positions, and fields (concerto-field).  It listens for a 'frontend-key-changed' event, which is fired from the fields when they detect that a new key from the server doesn't match the existing key-- this happens when the server wants to force the screen to refresh. The screen also fires a 'concertotick' event on each field every second-- this allows the fields to update their duration (which is only displayed in debug mode).
 
 The ConcertoField component (there's one for each field) queries the server for content just for it's field which it stores in a queue.  It fetches again just before it exhausts the queue, or every 10 seconds if there is no content.  The field then pops an item off the queue and renders it using a dynamic component, and then schedules it to happen again when the duration runs out.  Transitions (animations) occur automatically (as configured) as the current content is replaced.
 
 ## Testing
 
-To test this along with Concerto you will also need to git clone the concerto-frontend repo, then change the Gemfile-plugins file in your concerto directory to `gem "concerto_frontend", path: '../concerto-frontend'` and run
+To test this along with Concerto you will also need to git clone this repo, then change your configured plugins to disable to concerto-frontend plugin and add this plugin with a path pointing to where you cloned this repository. Then run the following in the repository directory to build the app and copy the app.js file to the gem's assets directory.
 ```
 npm run build
 cp dist/app.js ~/projects/concerto-frontend/concerto-frontend-gem/app/assets/javascripts/concerto_frontend/
 ```
-from this repo's directory.  The go back to your concerto directory and run `bundle install` and then `rails s` and when you preview the screen, it should be using this new frontend.  Remember that you can turn on "debug" mode by specifying a parameter of `&debug=true` to the preview screen url.
+Then go back to your concerto directory and run `bundle install` and then `rails s` and when you preview the screen, it should be using this new frontend.  Remember that you can turn on "debug" mode by specifying a parameter of `&debug=true` to the preview screen url.
 
 ## Deploying
 
@@ -45,6 +45,12 @@ You will need to build this project and copy the dist/app.js to the assets in th
 ```
 npm run build && cp dist/app.js ~/projects/concerto-frontend/concerto-frontend-gem/app/assets/javascripts/concerto_frontend/
 ```
+
+Then go into the concerto-frontend-gem directory, bump the version, run 
+```
+gem build concerto-frontend-vue.gemspec
+```
+And then push the gem to rubygems, the code to github, and go to the repository's releases page and create a release for this new version.
 
 ## Troubleshooting
 
