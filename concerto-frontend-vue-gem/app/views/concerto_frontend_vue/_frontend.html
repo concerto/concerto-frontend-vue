@@ -1,0 +1,4 @@
+<!-- from concerto-frontend-vue -->
+<div id="app" screen-id="<%= params[:id] %>" debug="<%= (params[:debug] || '') == 'true' %>" preview="<%= @preview %>" base-url="<%= Rails.application.config.relative_url_root %>"></div>
+<%= javascript_include_tag "concerto_frontend_vue/application" %>
+<!-- end from concerto-frontend-vue -->
